@@ -35,23 +35,26 @@ export default function Header() {
         </div>
 
         {/* Streak Display */}
-        <div className="flex items-center gap-xs text-warning-orange">
-          <span className="material-symbols-outlined fill-1 text-[20px]">
-            local_fire_department
-          </span>
-          <span className="font-label-md text-label-md md:text-headline-md">
-            {profile?.current_streak || 0}
-          </span>
-        </div>
+        <a href="/streak">
+          <div className="flex items-center gap-xs text-warning-orange">
+            <span className="material-symbols-outlined fill-1 text-[20px]">
+              local_fire_department
+            </span>
+
+            <span className="font-label-md text-label-md md:text-headline-md">
+              {profile?.current_streak || 0}
+            </span>
+          </div>
+        </a>
 
         {/* Profile Avatar */}
-        <div
-          onClick={() => signOut()}
-          className="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all"
-        >
-          <span className="material-symbols-outlined text-on-primary text-[18px]">
-            person
-          </span>
+        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all">
+          <a href="/profile">
+            {" "}
+            <span className="material-symbols-outlined text-on-primary text-[18px]">
+              person
+            </span>
+          </a>
         </div>
       </div>
     </header>

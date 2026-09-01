@@ -18,6 +18,8 @@ export default function QuestionNavigator({
   const getStatus = (index: number) => {
     if (answers[index]) return "answered";
     if (flagged[index]) return "flagged";
+
+    // Then use it
     return "unanswered";
   };
 
@@ -68,8 +70,7 @@ export default function QuestionNavigator({
         <div className="flex items-center gap-xs">
           <div className="w-3 h-3 rounded-full bg-warning-orange"></div>
           <span className="font-label-sm text-label-sm text-text-muted">
-            Flagged for review (
-            {Object.keys(flagged).filter((k) => flagged[k]).length})
+            Flagged for review ({Object.values(flagged).filter(Boolean).length})
           </span>
         </div>
       </div>

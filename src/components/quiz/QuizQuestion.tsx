@@ -1,9 +1,16 @@
+// src/components/quiz/QuizQuestion.tsx
 "use client";
 
-import { QuizQuestion as QuestionType } from "@/hooks/useQuizSession";
+interface Option {
+  label: string;
+  text: string;
+}
 
 interface QuizQuestionProps {
-  question: QuestionType;
+  question: {
+    question_text: string;
+    options: Option[];
+  };
   index: number;
   selectedAnswer: string | null;
   onSelect: (answer: string) => void;
@@ -19,15 +26,10 @@ export default function QuizQuestion({
   onFlag,
   flagged,
 }: QuizQuestionProps) {
-  const { question_text, options, correct_answer } = question;
-
-  // We don't reveal correct answer during quiz
+  const { question_text, options } = question;
 
   return (
     <div className="bg-surface-charcoal rounded-[24px] p-md md:p-lg shadow-xl relative overflow-hidden group">
-      <div className="absolute top-0 left-0 w-full h-1 bg-surface-container-high">
-        {/* Progress bar rendered separately, but we can include a mini one here */}
-      </div>
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-[60px] pointer-events-none"></div>
 
       <div className="flex items-center justify-between mb-lg pt-sm">
@@ -48,21 +50,7 @@ export default function QuizQuestion({
       </div>
 
       <div className="font-body-lg text-body-lg text-on-surface mb-xl leading-relaxed">
-        {question_text.split(/(<span[^>]*>.*?<\/span>)/g).map((part, i) => {
-          if (part.startsWith("<span")) {
-            // Replace with styled span
-            const innerText = part.replace(/<[^>]*>/g, "");
-            return (
-              <span
-                key={i}
-                className="font-mono bg-surface-container-low px-xs py-0.5 rounded text-primary"
-              >
-                {innerText}
-              </span>
-            );
-          }
-          return part;
-        })}
+        {question_text}
       </div>
 
       <div className="flex flex-col gap-sm">

@@ -1,6 +1,5 @@
 import {
   getLevelFromXP,
-  getTierFromLevel,
   getNextLevel,
   getLevelProgress,
 } from "@/lib/config/levels";
@@ -12,7 +11,7 @@ export function useLevel(xp: number) {
 
   return {
     level: levelData.level,
-    tier: levelData.tier,
+    tier: levelData.tier, // already included in levelData
     nextLevelXP: nextLevel?.xpRequired || null,
     progress,
   };

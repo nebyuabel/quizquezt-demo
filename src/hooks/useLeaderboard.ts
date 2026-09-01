@@ -103,7 +103,6 @@ export function useLeaderboard(scope: Scope, timeFilter: TimeFilter) {
           setLoading(false);
           return;
         }
-
         const { data: profiles, error: profilesError } = await supabase
           .from("profiles")
           .select(

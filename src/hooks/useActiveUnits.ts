@@ -1,3 +1,4 @@
+// src/hooks/useActiveUnits.ts
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -58,8 +59,33 @@ export function useActiveUnits() {
       data?.forEach((session) => {
         const unitId = session.unit_id;
         if (!unitId) return;
-        const unitName = session.units?.name || "Unknown";
-        const subjectName = session.units?.subject?.name || "Unknown";
+        const unitData = session.units;
+        // unitData is an array of objects? Actually it's a single object because we used "inner" but may return array.
+        // Let's handle both.
+        let unitName = "Unknown";
+        let subjectName = "Unknown";
+        if (Array.isArray(unitData) && unitData.length > 0) {
+          const first = unitData[0];
+          unitName = first.name || "Unknown";
+          if (
+            first.subject &&
+            Array.isArray(first.subject) &&
+            first.subject.length > 0
+          ) {
+            subjectName = first.subject[0].name || "Unknown";
+          }
+        } else if (unitData && typeof unitData === "object") {
+          // If it's a single object
+          unitName = (unitData as any).name || "Unknown";
+          if (
+            (unitData as any).subject &&
+            Array.isArray((unitData as any).subject) &&
+            (unitData as any).subject.length > 0
+          ) {
+            subjectName = (unitData as any).subject[0].name || "Unknown";
+          }
+        }
+
         if (!unitMap.has(unitId)) {
           unitMap.set(unitId, {
             totalScore: 0,

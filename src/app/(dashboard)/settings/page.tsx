@@ -43,6 +43,12 @@ export default function SettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+
   useEffect(() => {
     if (!authLoading && !user) {
       router.push("/login");
@@ -64,7 +70,22 @@ export default function SettingsPage() {
       },
     }));
   };
-
+  const handlePasswordChange = async () => {
+    setPasswordError(null);
+    setPasswordSuccess(false);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (error) throw error;
+      setPasswordSuccess(true);
+      setShowPasswordModal(false);
+      setOldPassword("");
+      setNewPassword("");
+    } catch (err: any) {
+      setPasswordError(err.message || "Failed to update password");
+    }
+  };
   const togglePrivacy = (key: keyof Preferences["privacy"]) => {
     setPreferences((prev) => ({
       ...prev,
@@ -344,36 +365,17 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="p-lg flex flex-col gap-lg">
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="font-label-md text-label-md text-on-surface">
-                        Public Profile
-                      </span>
-                      <span className="font-body-md text-body-md text-text-muted text-sm mt-1">
-                        Allow others to see your stats and streak.
-                      </span>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={preferences.privacy.publicProfile}
-                        onChange={() => togglePrivacy("publicProfile")}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-inner"></div>
-                    </label>
-                  </div>
                   <div className="h-px w-full bg-border-subtle"></div>
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <span className="font-label-md text-label-md text-on-surface">
                         Password
                       </span>
-                      <span className="font-body-md text-body-md text-text-muted text-sm mt-1">
-                        Last changed 3 months ago.
-                      </span>
                     </div>
-                    <button className="px-md py-sm rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors shadow-sm">
+                    <button
+                      onClick={() => setShowPasswordModal(true)}
+                      className="px-md py-sm rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors shadow-sm"
+                    >
                       Change
                     </button>
                   </div>
@@ -391,6 +393,72 @@ export default function SettingsPage() {
                     </button>
                   </div>
                 </div>
+                {showPasswordModal && (
+                  <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+                    <div className="bg-surface-container rounded-xl p-lg max-w-md w-full shadow-2xl">
+                      <h3 className="font-headline-md text-headline-md text-on-surface mb-md">
+                        Change Password
+                      </h3>
+                      {passwordError && (
+                        <div className="text-error text-sm mb-2">
+                          {passwordError}
+                        </div>
+                      )}
+                      {passwordSuccess && (
+                        <div className="text-success-green text-sm mb-2">
+                          Password updated successfully!
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-sm">
+                        <input
+                          type="password"
+                          placeholder="Current Password"
+                          value={oldPassword}
+                          onChange={(e) => setOldPassword(e.target.value)}
+                          className="bg-[#14141A] text-on-surface font-body-md text-body-md p-md rounded-lg focus:outline-none focus:ring-1 focus:ring-primary transition-shadow w-full shadow-inner"
+                        />
+                        <input
+                          type="password"
+                          placeholder="New Password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="bg-[#14141A] text-on-surface font-body-md text-body-md p-md rounded-lg focus:outline-none focus:ring-1 focus:ring-primary transition-shadow w-full shadow-inner"
+                        />
+                        <input
+                          type="password"
+                          placeholder="Confirm New Password"
+                          className="bg-[#14141A] text-on-surface font-body-md text-body-md p-md rounded-lg focus:outline-none focus:ring-1 focus:ring-primary transition-shadow w-full shadow-inner"
+                          onChange={(e) => {
+                            if (e.target.value !== newPassword) {
+                              setPasswordError("Passwords do not match");
+                            } else {
+                              setPasswordError(null);
+                            }
+                          }}
+                        />
+                        <div className="flex justify-end gap-sm mt-sm">
+                          <button
+                            onClick={() => {
+                              setShowPasswordModal(false);
+                              setPasswordError(null);
+                              setOldPassword("");
+                              setNewPassword("");
+                            }}
+                            className="px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handlePasswordChange}
+                            className="px-md py-sm rounded-lg bg-primary text-on-primary hover:bg-primary/80 transition-colors"
+                          >
+                            Update Password
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </section>
 
               {/* Appearance */}
@@ -449,25 +517,6 @@ export default function SettingsPage() {
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col gap-sm">
-                    <span className="font-label-md text-label-md text-on-surface">
-                      UI Density
-                    </span>
-                    <select
-                      value={preferences.uiDensity}
-                      onChange={(e) =>
-                        setPreferences({
-                          ...preferences,
-                          uiDensity: e.target.value,
-                        })
-                      }
-                      className="bg-[#14141A] text-on-surface font-body-md text-body-md p-md rounded-lg focus:outline-none focus:ring-1 focus:ring-primary transition-shadow w-full shadow-inner appearance-none cursor-pointer mt-1"
-                    >
-                      <option value="comfortable">Comfortable (Default)</option>
-                      <option value="compact">Compact</option>
-                      <option value="spacious">Spacious</option>
-                    </select>
                   </div>
                 </div>
               </section>

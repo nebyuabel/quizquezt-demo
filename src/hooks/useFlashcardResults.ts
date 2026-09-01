@@ -1,3 +1,4 @@
+// src/hooks/useFlashcardResults.ts
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -33,7 +34,9 @@ export function useFlashcardResults(sessionId: string) {
           coins_earned,
           cards_studied,
           completed_at,
-          flashcard_decks!inner (name)
+          flashcard_decks!inner (
+            name
+          )
         `,
         )
         .eq("id", sessionId)
@@ -46,9 +49,24 @@ export function useFlashcardResults(sessionId: string) {
         return;
       }
 
+      // Handle deck name: data.flashcard_decks is an array
+      let deckName = "Unknown Deck";
+      if (
+        Array.isArray(data.flashcard_decks) &&
+        data.flashcard_decks.length > 0
+      ) {
+        deckName = data.flashcard_decks[0].name || "Unknown Deck";
+      } else if (
+        data.flashcard_decks &&
+        typeof data.flashcard_decks === "object" &&
+        "name" in data.flashcard_decks
+      ) {
+        deckName = (data.flashcard_decks as any).name;
+      }
+
       setResults({
         id: data.id,
-        deck_name: data.flashcard_decks.name,
+        deck_name: deckName,
         cards_studied: data.cards_studied || 0,
         xp_earned: data.xp_earned || 0,
         coins_earned: data.coins_earned || 0,

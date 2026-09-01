@@ -378,6 +378,14 @@ export default function LeaderboardPage() {
                         </span>
                       </div>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-warning-orange text-[16px]">
+                        local_fire_department
+                      </span>
+                      <span className="font-label-sm text-label-sm text-on-surface-variant">
+                        {entry.current_streak}
+                      </span>
+                    </div>
                     <div className="w-32 text-right flex flex-col items-end pr-sm">
                       <span className="font-body-lg text-body-lg text-on-surface m-0 font-medium">
                         {entry.total_xp.toLocaleString()}
@@ -389,6 +397,14 @@ export default function LeaderboardPage() {
                             width: `${(entry.total_xp / (entries[0]?.total_xp || 1)) * 100}%`,
                           }}
                         ></div>
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-warning-orange text-[16px]">
+                            local_fire_department
+                          </span>
+                          <span className="font-label-sm text-label-sm text-on-surface-variant">
+                            {entry.current_streak}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -27,6 +27,13 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [selectedFrame, setSelectedFrame] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (profile?.preferences?.selected_frame) {
+      setSelectedFrame(profile.preferences.selected_frame);
+    }
+  }, [profile]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -170,6 +177,7 @@ export default function ProfilePage() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
 
             {/* Avatar with upload trigger */}
+
             <div
               className="relative group cursor-pointer z-10"
               onClick={() => fileInputRef.current?.click()}

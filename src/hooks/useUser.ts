@@ -23,6 +23,7 @@ export interface Profile {
     privacy: {
       publicProfile: boolean;
     };
+    selected_frame?: string | null;
     uiDensity: string;
   } | null;
 }

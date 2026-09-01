@@ -21,7 +21,7 @@ interface Unit {
   name: string;
 }
 
-export default function SubjectMatrix() {
+export default function SubjectMatrix(prop: { isEuee: boolean }) {
   const [grades, setGrades] = useState<Grade[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [units, setUnits] = useState<Unit[]>([]);

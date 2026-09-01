@@ -34,13 +34,39 @@ export default function Dashboard() {
     else setGreeting("Good Evening");
   }, []);
 
-  if (authLoading || profileLoading) {
-    return (
-      <div className="min-h-screen bg-surface flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  // Add this useEffect
+  useEffect(() => {
+    if (!user) return;
+
+    // Request permission
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+    const supabase = createClient();
+    // Check if user studied today
+    const checkStreak = async () => {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("last_activity_date, current_streak")
+        .eq("id", user.id)
+        .single();
+      if (profile) {
+        const today = new Date().toDateString();
+        const lastActivity = profile.last_activity_date
+          ? new Date(profile.last_activity_date).toDateString()
+          : null;
+        if (lastActivity !== today && Notification.permission === "granted") {
+          new Notification("Don't break your streak! 🔥", {
+            body: `You're on a ${profile.current_streak}-day streak. Study today to keep it going!`,
+            icon: "/icon-192.png",
+          });
+        }
+      }
+    };
+
+    const interval = setInterval(checkStreak, 1000 * 60 * 60 * 4); // every 4 hours
+    return () => clearInterval(interval);
+  }, [user]);
 
   if (!user) return null;
 
@@ -92,10 +118,7 @@ export default function Dashboard() {
           {/* Main Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-md">
             <div className="lg:col-span-8 space-y-md">
-              <SubjectMatrix />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
-                <QuickActions />
-              </div>
+              <SubjectMatrix isEuee={false} />
             </div>
             <div className="lg:col-span-4 space-y-md">
               <DailyObjectives />
