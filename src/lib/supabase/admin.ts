@@ -1,0 +1,20 @@
+import { createServerClient } from "@supabase/ssr";
+
+export function createAdminClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+  if (!url || !key) {
+    throw new Error("Supabase admin credentials not configured");
+  }
+
+  // No cookie handling needed for admin client
+  return createServerClient(url, key, {
+    cookies: {
+      getAll() {
+        return [];
+      },
+      setAll() {},
+    },
+  });
+}

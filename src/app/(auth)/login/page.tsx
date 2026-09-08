@@ -11,11 +11,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resendStatus, setResendStatus] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
   const router = useRouter();
   const supabase = createClient();
   const { user } = useAuth();
 
-  // If already authenticated, redirect to dashboard
   useEffect(() => {
     if (user) {
       router.push("/dashboard");
@@ -33,11 +36,41 @@ export default function Login() {
         password,
       });
       if (error) throw error;
-      // Redirect will happen automatically via the useEffect above after auth state change
-      // but we can also push here for immediate feedback
       router.push("/dashboard");
     } catch (err: any) {
       setError(err.message || "Failed to sign in");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendConfirmation = async () => {
+    if (!email) {
+      setResendStatus({
+        message: "Please enter your email address first.",
+        type: "error",
+      });
+      return;
+    }
+    setResendStatus(null);
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: email,
+      });
+      if (error) throw error;
+      setResendStatus({
+        message:
+          "Confirmation email resent. Please check your inbox (and spam).",
+        type: "success",
+      });
+    } catch (err: any) {
+      setResendStatus({
+        message: err.message || "Failed to resend email.",
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -54,12 +87,16 @@ export default function Login() {
         },
       });
       if (error) throw error;
-      // OAuth redirects away, no need to handle further
     } catch (err: any) {
       setError(err.message || "Failed to sign in with Google");
       setLoading(false);
     }
   };
+
+  // Check if the error indicates email not confirmed
+  const isEmailNotConfirmed = error
+    ?.toLowerCase()
+    .includes("email not confirmed");
 
   return (
     <main className="w-full flex items-center justify-center min-h-screen bg-surface">
@@ -104,6 +141,35 @@ export default function Login() {
                   error
                 </span>
                 {error}
+              </div>
+            )}
+
+            {/* Resend confirmation button */}
+            {isEmailNotConfirmed && (
+              <div className="mb-md p-sm bg-warning-orange/10 border border-warning-orange/20 rounded-lg flex flex-col gap-xs">
+                <p className="text-warning-orange text-label-md flex items-center gap-xs">
+                  <span className="material-symbols-outlined text-[20px]">
+                    info
+                  </span>
+                  Your email is not confirmed.
+                </p>
+                <button
+                  onClick={handleResendConfirmation}
+                  disabled={loading}
+                  className="text-primary hover:text-primary-fixed font-label-md text-label-md transition-colors self-start flex items-center gap-xs"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    send
+                  </span>
+                  Resend confirmation email
+                </button>
+                {resendStatus && (
+                  <p
+                    className={`text-label-sm ${resendStatus.type === "success" ? "text-success-green" : "text-error"}`}
+                  >
+                    {resendStatus.message}
+                  </p>
+                )}
               </div>
             )}
 
