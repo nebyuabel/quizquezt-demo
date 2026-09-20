@@ -44,9 +44,8 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen ">
         <div className="flex flex-col w-full relative">
           {/* Header Section */}
           <div className="px-xl py-lg flex justify-between items-end relative overflow-hidden">

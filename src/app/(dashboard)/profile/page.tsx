@@ -168,9 +168,8 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full px-md py-lg max-w-[1200px] mx-auto gap-xl">
           {/* Profile Header */}
           <section className="flex flex-col md:flex-row items-center md:items-start gap-lg bg-surface-container rounded-2xl p-lg shadow-lg relative overflow-hidden">

@@ -134,9 +134,8 @@ export default function QuizResultsPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full h-full min-h-[calc(100vh-64px)] relative overflow-hidden bg-surface items-center justify-center p-md">
           {/* Background Glows */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">

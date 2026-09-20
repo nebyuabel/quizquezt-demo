@@ -123,9 +123,8 @@ export default function FlashcardStudyPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full h-full">
           <div className="flex flex-col gap-xl w-full max-w-[1200px] mx-auto px-md py-xl">
             {/* Header */}

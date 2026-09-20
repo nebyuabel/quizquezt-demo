@@ -82,9 +82,8 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full h-full max-w-[1200px] mx-auto px-sm md:px-lg py-lg md:py-xl gap-lg">
           {/* Top Bar: Title, Timer, etc. */}
           <div className="flex items-center justify-between">

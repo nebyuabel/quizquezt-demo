@@ -124,9 +124,8 @@ export default function MarketplacePage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto pt-lg md:pt-xl pb-xl gap-xl">
           {/* Store Hero */}
           <div className="relative w-full rounded-3xl bg-surface-charcoal shadow-xl p-lg md:p-xl flex flex-col md:flex-row md:items-center justify-between overflow-hidden gap-lg">

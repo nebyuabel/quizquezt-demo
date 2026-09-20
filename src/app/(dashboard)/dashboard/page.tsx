@@ -72,9 +72,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
+   
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen ">
         <div className="flex flex-col w-full px-sm md:px-xl py-lg md:py-xl space-y-xl md:space-y-16">
           {/* Welcome Section */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-sm">

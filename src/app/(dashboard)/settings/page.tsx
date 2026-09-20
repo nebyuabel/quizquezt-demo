@@ -138,9 +138,9 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
+     
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full relative pb-xl">
           {/* Background Glow */}
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -mr-[200px] -mt-[200px]"></div>

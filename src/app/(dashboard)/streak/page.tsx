@@ -80,9 +80,8 @@ export default function StreakPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen ">
         <div className="flex flex-col w-full relative">
           {/* Background glow */}
           <div className="absolute top-0 right-0 w-3/4 h-96 bg-gradient-to-bl from-warning-orange/10 via-warning-orange/5 to-transparent rounded-bl-full pointer-events-none blur-3xl mix-blend-screen"></div>

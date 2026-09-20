@@ -30,9 +30,8 @@ export default function FlashcardsPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full max-w-[1200px] mx-auto px-sm md:px-lg py-lg md:py-xl space-y-xl md:space-y-16">
           <div className="flex flex-col">
             <h1 className="font-display-lg text-display-lg text-on-surface">

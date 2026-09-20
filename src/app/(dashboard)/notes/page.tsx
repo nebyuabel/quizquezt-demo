@@ -45,9 +45,9 @@ export default function NotesPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <Sidebar />
+     
       <Header />
-      <main className="relative pt-16 bg-surface min-h-screen md:pl-64">
+      <main className="relative pt-16 bg-surface min-h-screen">
         <div className="flex flex-col w-full">
           <div className="w-full max-w-max-width mx-auto px-margin-mobile md:px-0 py-lg flex flex-col gap-lg">
             {/* Header */}
